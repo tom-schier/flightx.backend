@@ -1,0 +1,818 @@
+openapi: 3.0.1
+info:
+  title: FlightX.WebApp
+  version: "1.0"
+servers:
+- url: /
+paths:
+  /api/Apple/ValidateReceiptData:
+    post:
+      tags:
+      - Apple
+      operationId: apiAppleValidateReceiptDataPOST
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/Receipt'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Receipt'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/Receipt'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/Receipt'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+      x-swagger-router-controller: Apple
+  /api/Locations/Test:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsTestGET
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/FindLocations:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsFindLocationsGET
+      parameters:
+      - name: st
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: numRecords
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: locType
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/FindAirfields:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsFindAirfieldsGET
+      parameters:
+      - name: latUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: latLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: numRecords
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/FindWaypoints:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsFindWaypointsGET
+      parameters:
+      - name: latUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: latLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: numRecords
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/AirportByLocID:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsAirportByLocIDGET
+      parameters:
+      - name: locationID
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+      x-swagger-router-controller: Location
+  /api/Locations/LocByID:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsLocByIDGET
+      parameters:
+      - name: id
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+      x-swagger-router-controller: Location
+  /api/Locations/LocationCount:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsLocationCountGET
+      parameters:
+      - name: latUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: latLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: locType
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/{id}:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsIdGET
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+      x-swagger-router-controller: Location
+  /api/Locations/locid/{locType}/{id}:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsLocidLocTypeIdGET
+      parameters:
+      - name: locType
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/desc/{locType}/{descr}/{num}/{filter}:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsDescLocTypeDescrNumFilterGET
+      parameters:
+      - name: locType
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: descr
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: num
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: filter
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/region/{locType}/{filter}:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsRegionLocTypeFilterGET
+      parameters:
+      - name: locType
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: filter
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: latUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: latLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/code/{code}:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsCodeCodeGET
+      parameters:
+      - name: code
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/Locations/count/{locType}/{filter}:
+    get:
+      tags:
+      - Location
+      operationId: apiLocationsCountLocTypeFilterGET
+      parameters:
+      - name: latUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: latLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngUpper
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: lngLower
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+      - name: locType
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      - name: filter
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+                x-content-type: application/json
+      x-swagger-router-controller: Location
+  /api/UserAccounts:
+    get:
+      tags:
+      - UserAccounts
+      operationId: apiUserAccountsGET
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserAccount'
+                x-content-type: application/json
+      x-swagger-router-controller: UserAccounts
+    post:
+      tags:
+      - UserAccounts
+      operationId: apiUserAccountsPOST
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/UserAccount'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAccount'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserAccount'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserAccount'
+      responses:
+        "200":
+          description: Success
+      x-swagger-router-controller: UserAccounts
+  /api/UserAccounts/{id}:
+    get:
+      tags:
+      - UserAccounts
+      operationId: apiUserAccountsIdGET
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+      x-swagger-router-controller: UserAccounts
+    put:
+      tags:
+      - UserAccounts
+      operationId: apiUserAccountsIdPUT
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/UserAccount'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAccount'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserAccount'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserAccount'
+      responses:
+        "200":
+          description: Success
+      x-swagger-router-controller: UserAccounts
+    delete:
+      tags:
+      - UserAccounts
+      operationId: apiUserAccountsIdDELETE
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+      x-swagger-router-controller: UserAccounts
+components:
+  schemas:
+    Location:
+      type: object
+      properties:
+        Id:
+          type: string
+          nullable: true
+        locId:
+          type: integer
+          format: int32
+        locType:
+          type: integer
+          format: int32
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        code:
+          type: string
+          nullable: true
+        locName:
+          type: string
+          nullable: true
+        locCategoryId:
+          type: integer
+          format: int32
+        locCountryCode:
+          type: string
+          nullable: true
+        elevation:
+          type: integer
+          format: int32
+        locSource:
+          type: string
+          nullable: true
+        locAddress:
+          type: string
+          nullable: true
+        locContact:
+          type: string
+          nullable: true
+        locState:
+          type: string
+          nullable: true
+      additionalProperties: false
+      example:
+        elevation: 2
+        code: code
+        locSource: locSource
+        latitude: 1.4658129805029452
+        locName: locName
+        locContact: locContact
+        locCategoryId: 5
+        locCountryCode: locCountryCode
+        locAddress: locAddress
+        Id: Id
+        locState: locState
+        locType: 6
+        locId: 0
+        longitude: 5.962133916683182
+    Receipt:
+      type: object
+      properties:
+        environment:
+          type: integer
+          format: int32
+        receiptData:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+        excludeOld:
+          type: boolean
+      additionalProperties: false
+    UserAccount:
+      required:
+      - Source
+      - Target
+      type: object
+      properties:
+        Id:
+          type: string
+          nullable: true
+        UserName:
+          type: string
+          nullable: true
+        DeviceId:
+          type: string
+          nullable: true
+        Email:
+          type: string
+          nullable: true
+        Source:
+          type: string
+        Target:
+          type: string
+        ExternalUserId:
+          type: string
+          nullable: true
+        DateAdded:
+          type: string
+          format: date-time
+          nullable: true
+        DateDeleted:
+          type: string
+          format: date-time
+          nullable: true
+        DateModified:
+          type: string
+          format: date-time
+          nullable: true
+        Login:
+          type: string
+          nullable: true
+        ExternalUserToken:
+          type: string
+          nullable: true
+        ValidUntil:
+          type: string
+          format: date-time
+          nullable: true
+        AccessLevel:
+          type: integer
+          format: int32
+          nullable: true
+        Subscription:
+          type: string
+          nullable: true
+        LastLogon:
+          type: string
+          format: date-time
+          nullable: true
+        LogonCount:
+          type: integer
+          format: int32
+          nullable: true
+      additionalProperties: false
+      example:
+        UserName: UserName
+        Email: Email
+        DateDeleted: 2000-01-23T04:56:07.000+00:00
+        DeviceId: DeviceId
+        LastLogon: 2000-01-23T04:56:07.000+00:00
+        Login: Login
+        Source: Source
+        AccessLevel: 0
+        ValidUntil: 2000-01-23T04:56:07.000+00:00
+        Target: Target
+        LogonCount: 6
+        ExternalUserId: ExternalUserId
+        Id: Id
+        ExternalUserToken: ExternalUserToken
+        DateAdded: 2000-01-23T04:56:07.000+00:00
+        Subscription: Subscription
+        DateModified: 2000-01-23T04:56:07.000+00:00
