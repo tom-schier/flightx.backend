@@ -7,6 +7,7 @@ var express = require('express');
 var userRouter = require('./routes/user.routes');
 var locationRouter = require('./routes/location.routes');
 var serverPort = 8080;
+var jwt = require('jsonwebtoken');
 
 var jsyaml = require('js-yaml');
 var fs = require('fs');
@@ -22,8 +23,8 @@ app.use('/api/Locations', locationRouter);
 
 
 var options_object = {
-    //controllers: './controllers',
-    //checkControllers: false,
+    //controllers: '/controllers',
+    //checkControllers: true,
     loglevel: 'info',
     logfile: './logs/api.log',
     // customLogger: myLogger,
@@ -36,19 +37,43 @@ var options_object = {
       swaggerUi: '/docs',
       swaggerUiPrefix: ''
     },
+    oasSecurity: true,
     securityFile: {
-      // your security settings
+        Bearer: {
+          issuer: 'ISA Auth',
+          algorithms: ['HS256'],
+          key: 'secretKey'
+      }
     },
     oasAuth: true,
     grantsFile: {
       // your authorization settings
     },
     ignoreUnknownFormats: true
-  };
+};
+
+function verifyToken(req, secDef, token, next) {
+    const bearerRegex = /^Bearer\s/;
+    
+    if (token && bearerRegex.test(token)) {
+      var newToken = token.replace(bearerRegex, '');
+      jwt.verify(newToken, 'secretKey',
+        {
+          issuer: 'ISA Auth'
+        },
+        (error, decoded) => {
+          if (error === null && decoded) {
+            return next();
+          }
+          return next(req.res.sendStatus(403));
+        }
+      );
+    } else {
+      return next(req.res.sendStatus(403));
+    }
+}
   
-  oasTools.configure(options_object);
-
-
+oasTools.configure(options_object);
 oasTools.initialize(oasDoc, app, function() {
     http.createServer(app).listen(serverPort, function () {
         console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
