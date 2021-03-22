@@ -1,36 +1,22 @@
 'use strict';
 
-
+var ObjectId = require('mongodb').ObjectID;
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017';
 /**
  *
  * locationID Integer  (optional)
  * returns Location
  **/
+
+ const client = new MongoClient(url, { useNewUrlParser: true,
+  useUnifiedTopology: true,
+  connectTimeoutMS: 1000,
+  serverSelectionTimeoutMS: 1000,
+  socketTimeoutMS: 1000 });
+
 exports.apiLocationsAirportByLocIDGET = function(locationID) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "elevation" : 2,
-  "code" : "code",
-  "locSource" : "locSource",
-  "latitude" : 1.4658129805029452,
-  "locName" : "locName",
-  "locContact" : "locContact",
-  "locCategoryId" : 5,
-  "locCountryCode" : "locCountryCode",
-  "locAddress" : "locAddress",
-  "Id" : "Id",
-  "locState" : "locState",
-  "locType" : 6,
-  "locId" : 0,
-  "longitude" : 5.962133916683182
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+
 }
 
 
@@ -316,30 +302,18 @@ exports.apiLocationsFindWaypointsGET = function(latUpper,latLower,lngUpper,lngLo
  * returns Location
  **/
 exports.apiLocationsIdGET = function(id) {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = {
-  "elevation" : 2,
-  "code" : "code",
-  "locSource" : "locSource",
-  "latitude" : 1.4658129805029452,
-  "locName" : "locName",
-  "locContact" : "locContact",
-  "locCategoryId" : 5,
-  "locCountryCode" : "locCountryCode",
-  "locAddress" : "locAddress",
-  "Id" : "Id",
-  "locState" : "locState",
-  "locType" : 6,
-  "locId" : 0,
-  "longitude" : 5.962133916683182
-};
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
+  return new Promise((resolve, reject) =>
+      client.connect((error, database) => {
+        if (database != null){
+          var flightx = database.db("flightx");
+          flightx.collection('locations').findOne({ _id: ObjectId(id) }).then(location => {
+              resolve(location);
+          });          
+        } else {
+            reject(error);
+        }
+      })    
+  );
 }
 
 
