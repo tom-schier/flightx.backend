@@ -1,66 +1,41 @@
 'use strict';
-const MongoClient = require('mongodb').MongoClient  
 
+const MongoClient = require('mongodb').MongoClient;
+const url = 'mongodb://localhost:27017';
 /**
- *
- * returns List
- **/
-exports.apiUserAccountsGET = function() {
-  return new Promise(function(resolve, reject) {
-    var examples = {};
-    examples['application/json'] = [ {
-  "UserName" : "UserName",
-  "Email" : "Email",
-  "DateDeleted" : "2000-01-23T04:56:07.000+00:00",
-  "DeviceId" : "DeviceId",
-  "LastLogon" : "2000-01-23T04:56:07.000+00:00",
-  "Login" : "Login",
-  "Source" : "Source",
-  "AccessLevel" : 0,
-  "ValidUntil" : "2000-01-23T04:56:07.000+00:00",
-  "Target" : "Target",
-  "LogonCount" : 6,
-  "ExternalUserId" : "ExternalUserId",
-  "Id" : "Id",
-  "ExternalUserToken" : "ExternalUserToken",
-  "DateAdded" : "2000-01-23T04:56:07.000+00:00",
-  "Subscription" : "Subscription",
-  "DateModified" : "2000-01-23T04:56:07.000+00:00"
-}, {
-  "UserName" : "UserName",
-  "Email" : "Email",
-  "DateDeleted" : "2000-01-23T04:56:07.000+00:00",
-  "DeviceId" : "DeviceId",
-  "LastLogon" : "2000-01-23T04:56:07.000+00:00",
-  "Login" : "Login",
-  "Source" : "Source",
-  "AccessLevel" : 0,
-  "ValidUntil" : "2000-01-23T04:56:07.000+00:00",
-  "Target" : "Target",
-  "LogonCount" : 6,
-  "ExternalUserId" : "ExternalUserId",
-  "Id" : "Id",
-  "ExternalUserToken" : "ExternalUserToken",
-  "DateAdded" : "2000-01-23T04:56:07.000+00:00",
-  "Subscription" : "Subscription",
-  "DateModified" : "2000-01-23T04:56:07.000+00:00"
-} ];
-    if (Object.keys(examples).length > 0) {
-      resolve(examples[Object.keys(examples)[0]]);
-    } else {
-      resolve();
-    }
-  });
-}
+ * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
+ * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
+ */
+//const uri = "mongodb+srv://<username>:<password>@<your-cluster-url>/test?retryWrites=true&w=majority";
+const client = new MongoClient(url, { useNewUrlParser: true,
+  useUnifiedTopology: true,
+  connectTimeoutMS: 1000,
+  serverSelectionTimeoutMS: 1000,
+  socketTimeoutMS: 1000 });
 
+
+exports.apiUserAccountsGET = function () {
+  return new Promise((resolve, reject) =>
+      client.connect((error, database) => {
+        if (database != null){
+          var flightx = database.db("flightx");
+          flightx.collection('users').find().toArray().then(users => {
+            resolve(users);
+          })
+        } else {
+            reject(error)
+        }
+      })    
+  );
+};
 
 /**
  *
  * id String 
  * no response value expected for this operation
  **/
-exports.apiUserAccountsIdDELETE = function(id) {
-  return new Promise(function(resolve, reject) {
+exports.apiUserAccountsIdDELETE = function (id) {
+  return new Promise(function (resolve, reject) {
     resolve();
   });
 }
@@ -71,8 +46,8 @@ exports.apiUserAccountsIdDELETE = function(id) {
  * id String 
  * no response value expected for this operation
  **/
-exports.apiUserAccountsIdGET = function(id) {
-  return new Promise(function(resolve, reject) {
+exports.apiUserAccountsIdGET = function (id) {
+  return new Promise(function (resolve, reject) {
     resolve();
   });
 }
@@ -84,8 +59,8 @@ exports.apiUserAccountsIdGET = function(id) {
  * id String 
  * no response value expected for this operation
  **/
-exports.apiUserAccountsIdPUT = function(body,id) {
-  return new Promise(function(resolve, reject) {
+exports.apiUserAccountsIdPUT = function (body, id) {
+  return new Promise(function (resolve, reject) {
     resolve();
   });
 }
@@ -96,8 +71,8 @@ exports.apiUserAccountsIdPUT = function(body,id) {
  * body UserAccount  (optional)
  * no response value expected for this operation
  **/
-exports.apiUserAccountsPOST = function(body) {
-  return new Promise(function(resolve, reject) {
+exports.apiUserAccountsPOST = function (body) {
+  return new Promise(function (resolve, reject) {
     resolve();
   });
 }

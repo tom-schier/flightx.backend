@@ -7,6 +7,9 @@ module.exports.apiUserAccountsGET = function apiUserAccountsGET (req, res, next)
   UserAccounts.apiUserAccountsGET()
     .then(function (response) {
       utils.writeJson(res, response);
+    }, error => {
+      let resp = utils.respondWithCode(400, error);
+      utils.writeJson(res, resp, 400);
     })
     .catch(function (response) {
       utils.writeJson(res, response);

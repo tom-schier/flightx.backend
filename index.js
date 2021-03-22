@@ -2,32 +2,28 @@
 
 var path = require('path');
 var http = require('http');
-var YAML = require('js-yaml');
+const bodyParser= require('body-parser') 
 var express = require('express');
 var userRouter = require('./routes/user.routes');
 var locationRouter = require('./routes/location.routes');
-var serverPort = 8080;
-var jwt = require('jsonwebtoken');
-
 var jsyaml = require('js-yaml');
 var fs = require('fs');
 var oasTools = require('oas-tools');
+var jwt = require('jsonwebtoken');
 
+var serverPort = 8080;
 var spec = fs.readFileSync(path.join('api/openapi.yaml'), 'utf8');
 var oasDoc = jsyaml.safeLoad(spec);
+
 var app = express();
-
-
+app.use(bodyParser.urlencoded({extended: true}))
 app.use('/api/UserAccounts', userRouter);
 app.use('/api/Locations', locationRouter);
 
 
 var options_object = {
-    //controllers: '/controllers',
-    //checkControllers: true,
     loglevel: 'info',
     logfile: './logs/api.log',
-    // customLogger: myLogger,
     strict: false,
     router: true,
     validator: true,
@@ -51,34 +47,16 @@ var options_object = {
     },
     ignoreUnknownFormats: true
 };
-
-function verifyToken(req, secDef, token, next) {
-    const bearerRegex = /^Bearer\s/;
-    
-    if (token && bearerRegex.test(token)) {
-      var newToken = token.replace(bearerRegex, '');
-      jwt.verify(newToken, 'secretKey',
-        {
-          issuer: 'ISA Auth'
-        },
-        (error, decoded) => {
-          if (error === null && decoded) {
-            return next();
-          }
-          return next(req.res.sendStatus(403));
-        }
-      );
-    } else {
-      return next(req.res.sendStatus(403));
-    }
-}
-  
 oasTools.configure(options_object);
+const url = '';
+
+
 oasTools.initialize(oasDoc, app, function() {
     http.createServer(app).listen(serverPort, function () {
         console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
         console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
     });
 });
+
 
 

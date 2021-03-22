@@ -14,18 +14,6 @@ const LocationSchema = new mongoose.Schema({
     locAddress: String,
     locContact: String,
     locState: String
-    // number: locType,
-    // number: latitude,
-    // number: longitude,
-    // string: code,
-    // string: locName,
-    // number: locCategoryId,
-    // string: locCountryCode,
-    // number: elevation,
-    // string: locSource,
-    // string: locAddress,
-    // string: locContact,
-    // string: locState
 })
 
 const Location = mongoose.model('Location', LocationSchema)
