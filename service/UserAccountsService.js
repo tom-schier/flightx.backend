@@ -1,4 +1,5 @@
 'use strict';
+var ObjectId = require('mongodb').ObjectID;
 
 const MongoClient = require('mongodb').MongoClient;
 const url = 'mongodb://localhost:27017';
@@ -6,7 +7,6 @@ const url = 'mongodb://localhost:27017';
  * Connection URI. Update <username>, <password>, and <your-cluster-url> to reflect your cluster.
  * See https://docs.mongodb.com/ecosystem/drivers/node/ for more details
  */
-//const uri = "mongodb+srv://<username>:<password>@<your-cluster-url>/test?retryWrites=true&w=majority";
 const client = new MongoClient(url, { useNewUrlParser: true,
   useUnifiedTopology: true,
   connectTimeoutMS: 1000,
@@ -23,7 +23,7 @@ exports.apiUserAccountsGET = function () {
             resolve(users);
           })
         } else {
-            reject(error)
+            reject(error);
         }
       })    
   );
@@ -47,9 +47,18 @@ exports.apiUserAccountsIdDELETE = function (id) {
  * no response value expected for this operation
  **/
 exports.apiUserAccountsIdGET = function (id) {
-  return new Promise(function (resolve, reject) {
-    resolve();
-  });
+  return new Promise((resolve, reject) =>
+      client.connect((error, database) => {
+        if (database != null){
+          var flightx = database.db("flightx");
+          flightx.collection('users').findOne({ _id: ObjectId(id) }).then(usr => {
+              resolve(usr);
+          });          
+        } else {
+            reject(error);
+        }
+      })    
+  );
 }
 
 
